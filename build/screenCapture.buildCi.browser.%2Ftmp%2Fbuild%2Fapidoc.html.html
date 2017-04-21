@@ -1,0 +1,164 @@
+<html><head></head><body><div class="apidocDiv">
+<style>
+/*csslint
+*/
+.apidocDiv {
+    background: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.apidocDiv a[href] {
+    color: #33f;
+    font-weight: bold;
+    text-decoration: none;
+}
+.apidocDiv a[href]:hover {
+    text-decoration: underline;
+}
+.apidocCodeCommentSpan {
+    background: #bbf;
+    color: #000;
+    display: block;
+}
+.apidocCodeKeywordSpan {
+    color: #d00;
+    font-weight: bold;
+}
+.apidocCodePre {
+    background: #eef;
+    border: 1px solid;
+    color: #777;
+    padding: 5px;
+    white-space: pre-wrap;
+}
+.apidocFooterDiv {
+    margin-top: 20px;
+    text-align: center;
+}
+.apidocModuleLi {
+    margin-top: 10px;
+}
+.apidocSectionDiv {
+    border-top: 1px solid;
+    margin-top: 20px;
+}
+.apidocSignatureSpan {
+    color: #777;
+    font-weight: bold;
+}
+</style>
+<h1>api documentation for
+    <a href="https://github.com/jeff-hager-dev/mongo-seed#readme">mongo-seed (v0.6.0)</a>
+</h1>
+<h4>Built with testing MEAN applications in mind. Gives a developer a way to populate mongo database from different data sources; functions, files, directories of JSON files.</h4>
+<div class="apidocSectionDiv"><a href="#apidoc.tableOfContents" id="apidoc.tableOfContents"><h1>table of contents</h1></a><ol>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.mongo-seed">module mongo-seed</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.mongo-seed.clear">
+            function <span class="apidocSignatureSpan">mongo-seed.</span>clear
+            <span class="apidocSignatureSpan">(host, port, db, callback)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.mongo-seed.load">
+            function <span class="apidocSignatureSpan">mongo-seed.</span>load
+            <span class="apidocSignatureSpan">(host, port, db, seedLocation, loadType, callback)</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+</ol></div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.mongo-seed" id="apidoc.module.mongo-seed">module mongo-seed</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.mongo-seed.clear" id="apidoc.element.mongo-seed.clear">
+        function <span class="apidocSignatureSpan">mongo-seed.</span>clear
+        <span class="apidocSignatureSpan">(host, port, db, callback)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">clear = function (host, port, db, callback) {
+  var db = new Db(db, new Server(host, port));
+  db.open(function (err, db) {
+    db.dropDatabase(function (err) {
+      callback(err);
+    });
+  });
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+  "port": "",
+  "db": ""
+};
+
+before(function (done) {
+  async.waterfall([
+      function (callback) {
+        mongoSeed.<span class="apidocCodeKeywordSpan">clear</span>(mongo.host, mongo.port, mongo.db, function (err) {
+          callback(err);
+        });
+      },
+      function (callback) {
+        var seedPath = path.resolve(__dirname + "/../seeds/functionSeed.js");
+        mongoSeed.load(mongo.host, mongo.port, mongo.db, seedPath, "function", function (err) {
+          callback(err);
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.mongo-seed.load" id="apidoc.element.mongo-seed.load">
+        function <span class="apidocSignatureSpan">mongo-seed.</span>load
+        <span class="apidocSignatureSpan">(host, port, db, seedLocation, loadType, callback)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">load = function (host, port, db, seedLocation, loadType, callback) {
+  var action = loadActions[loadType];
+  if (!action) {
+    return callback(new Error("Invalid load type"));
+  }
+  action(host, port, db, seedLocation, callback);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+### Directory Seed
+
+This is where you have a directory filled with JSON files that were created from a ```mongoexport```.
+
+__NOTE:__ make sure to use --jsonArray when exporting data from tables. Similar ```mongoexport --db PetShop --collection Food --
+out Food.json --jsonArray```
+
+```javascript
+mongoSeed.<span class="apidocCodeKeywordSpan">load</span>("localhost",27017, "&lt;name_of_database&gt;", &amp;#
+x22;&lt;seed_directory&gt;", "dir", function (err) {
+  //..do what ever you need
+});
+```
+
+### File
+
+This is similar to the directory seed. You have a file with an object in it where each property is a collection name and the value
+ is an array of documents for that collection.
+...</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocFooterDiv">
+    [ this document was created with
+    <a href="https://github.com/kaizhu256/node-utility2" target="_blank">utility2</a>
+    ]
+</div>
+</div>
+</body></html>
